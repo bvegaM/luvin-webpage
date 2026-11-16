@@ -5,7 +5,7 @@ import cloudflare from '@astrojs/cloudflare'
 
 export default defineConfig({
   // Tu dominio real: se usa en las URLs canónicas, en las imágenes para redes y en los enlaces e imágenes del correo.
-  site: 'https://luvin.dev',
+  site: 'https://lu-vin.com',
   // Sin sesiones ni Cloudflare Images: Luvin no los usa y así no hace falta crear recursos extra en Cloudflare.
   adapter: cloudflare({ imageService: 'passthrough' }),
   session: false,
