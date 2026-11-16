@@ -1,0 +1,53 @@
+---
+// Comparación completa Luvin vs Postman Flows (página /compare/postman-flows).
+import { strings, type Lang } from '../i18n/strings'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = strings[lang]
+---
+
+<div class="vs">
+      <div class="vs-head center narrow">
+        <h1 class="vs-title">
+          <span class="vs-side"><img src="/logo.svg" width="36" height="36" alt="" />Luvin</span>
+          <span class="vs-x">vs</span>
+          <span class="vs-side"><img src="/media/postman.svg" width="36" height="36" alt="" />{t.flows.flowsLabel}</span>
+        </h1>
+        <p class="body">{t.flows.lead}</p>
+      </div>
+      <div class="table-wrap">
+        <table class="compare vs-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">—</span></th>
+              <th scope="col">
+                <img src="/media/postman.svg" width="30" height="30" alt="" />
+                <span>{t.flows.flowsLabel}</span>
+              </th>
+              <th scope="col" class="us">
+                <img src="/logo.svg" width="30" height="30" alt="" />
+                <span>Luvin</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              t.flows.rows.map((row) => (
+                <tr>
+                  <th scope="row">{row.label}</th>
+                  <td data-label={t.flows.flowsLabel}>{row.flows}</td>
+                  <td class="us" data-label="Luvin">
+                    <span class="check" aria-hidden="true">✓</span>
+                    {row.luvin}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="vs-verdict">{t.flows.verdict}</p>
+    </div>

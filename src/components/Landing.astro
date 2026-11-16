@@ -1,0 +1,260 @@
+---
+import { strings, type Lang } from '../i18n/strings'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = strings[lang]
+const media = lang === 'en' ? '/media' : '/media/es'
+const tools = [
+  { key: 'luvin', name: 'Luvin', icon: '/logo.svg' },
+  { key: 'postman', name: 'Postman', icon: '/media/postman.svg' },
+  { key: 'bruno', name: 'Bruno', icon: '/media/bruno.svg' },
+  { key: 'insomnia', name: 'Insomnia', icon: '/media/insomnia.svg' },
+] as const
+---
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>{t.hero.eyebrow}</p>
+      <h1>{t.hero.title1} <span class="accent">{t.hero.title2}</span></h1>
+      <p class="lead">{t.hero.lead}</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#waitlist">{t.hero.primary}</a>
+        <a class="btn btn-ghost" href="#how">{t.hero.secondary}</a>
+      </div>
+      <p class="note">{t.hero.note}</p>
+    </div>
+    <div class="hero-media">
+      <video
+        src={`/media/teaser-${lang}.mp4`}
+        poster={`/media/poster-${lang}.jpg`}
+        aria-label={t.hero.videoLabel}
+        controls
+        muted
+        autoplay
+        loop
+        playsinline
+        preload="metadata"></video>
+    </div>
+  </div>
+</section>
+
+<!-- El problema -->
+<section id="problem" class="section">
+  <div class="container narrow center">
+    <p class="kicker">{t.problem.kicker}</p>
+    <h2>{t.problem.title}</h2>
+    <p class="body">{t.problem.body}</p>
+  </div>
+  <div class="container">
+    <img class="chain" src={`${media}/chain-dark.svg`} alt={t.problem.chainAlt} width="1280" height="430" loading="lazy" />
+    <p class="answer">{t.problem.answer}</p>
+  </div>
+</section>
+
+<!-- Cómo funciona -->
+<section id="how" class="section alt">
+  <div class="container">
+    <div class="center narrow">
+      <p class="kicker">{t.how.kicker}</p>
+      <h2>{t.how.title}</h2>
+    </div>
+    <ol class="steps">
+      {
+        t.how.steps.map((s, i) => (
+          <li class="card step">
+            <span class="step-num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="showcase">
+      {
+        t.showcase.map((s, i) => (
+          <div class={`show-row ${i % 2 ? 'reverse' : ''}`}>
+            <div class="show-copy">
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </div>
+            <img class="shot" src={`${media}/${s.img}.jpg`} alt={s.alt} width="1600" height="955" loading="lazy" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Comparación -->
+<section id="compare" class="section">
+  <div class="container">
+    <div class="center narrow">
+      <p class="kicker">{t.compare.kicker}</p>
+      <h2>{t.compare.title}</h2>
+      <p class="body">{t.compare.lead}</p>
+    </div>
+    <div class="table-wrap">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th scope="col"><span class="sr-only">—</span></th>
+            {
+              tools.map((tool) => (
+                <th scope="col" class={tool.key === 'luvin' ? 'us' : ''}>
+                  <img src={tool.icon} width="30" height="30" alt="" />
+                  <span>{tool.name}</span>
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            t.compare.rows.map((row) => (
+              <tr>
+                <th scope="row">{row.label}</th>
+                <td class="us">
+                  <span class="check" aria-hidden="true">✓</span>
+                  {row.luvin}
+                </td>
+                <td>{row.postman}</td>
+                <td>{row.bruno}</td>
+                <td>{row.insomnia}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="vs-teaser">
+      <img src="/media/postman.svg" width="40" height="40" alt="" />
+      <div class="vs-teaser-copy">
+        <p class="vs-q">{t.flows.homeQuestion}</p>
+        <p>{t.flows.lead}</p>
+      </div>
+      <a class="btn btn-ghost" href={`${lang === 'en' ? '/' : '/es/'}compare/postman-flows/`}>{t.flows.homeLink} →</a>
+    </div>
+    <p class="fine center">{t.compare.note}</p>
+  </div>
+</section>
+
+<!-- Funciones -->
+<section id="features" class="section alt">
+  <div class="container">
+    <div class="center narrow">
+      <p class="kicker">{t.features.kicker}</p>
+      <h2>{t.features.title}</h2>
+    </div>
+    <div class="grid-3">
+      {
+        t.features.items.map((f) => (
+          <div class="card">
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Para quién es -->
+<section class="section">
+  <div class="container">
+    <div class="center narrow">
+      <p class="kicker">{t.who.kicker}</p>
+      <h2>{t.who.title}</h2>
+    </div>
+    <div class="grid-2">
+      {
+        t.who.items.map((w) => (
+          <div class="card">
+            <h3>{w.title}</h3>
+            <p>{w.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Lista de espera -->
+<section id="waitlist" class="section waitlist">
+  <div class="container narrow center">
+    <img src="/logo.svg" width="64" height="64" alt="" />
+    <h2>{t.waitlist.title}</h2>
+    <p class="body">{t.waitlist.lead}</p>
+    <form class="wl-form" data-thanks={t.waitlist.thanks} data-error={t.waitlist.error} data-soon={t.waitlist.soon} data-sending={t.waitlist.sending}>
+      <input type="hidden" name="lang" value={lang} />
+      <div class="wl-hp" aria-hidden="true">
+        <label for="wl-website">Website</label>
+        <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <div class="wl-grid">
+        <label class="wl-field">
+          <span>{t.waitlist.name}</span>
+          <input name="name" type="text" required maxlength="120" autocomplete="name" placeholder={t.waitlist.namePlaceholder} />
+        </label>
+        <label class="wl-field">
+          <span>{t.waitlist.label}</span>
+          <input name="email" type="email" required maxlength="254" autocomplete="email" placeholder={t.waitlist.placeholder} />
+        </label>
+        <label class="wl-field">
+          <span>{t.waitlist.company}</span>
+          <input name="company" type="text" maxlength="160" autocomplete="organization" placeholder={t.waitlist.companyPlaceholder} />
+        </label>
+        <label class="wl-field">
+          <span>{t.waitlist.role}</span>
+          <select name="role" required>
+            <option value="" disabled selected>{t.waitlist.rolePlaceholder}</option>
+            {t.waitlist.roles.map((r) => <option value={r}>{r}</option>)}
+          </select>
+        </label>
+        <label class="wl-field wl-wide">
+          <span>{t.waitlist.useCase}</span>
+          <textarea name="useCase" rows="3" maxlength="2000" placeholder={t.waitlist.useCasePlaceholder}></textarea>
+        </label>
+      </div>
+      <button class="btn btn-primary" type="submit">{t.waitlist.button}</button>
+      <p class="wl-privacy">{t.waitlist.privacy}</p>
+    </form>
+    <p class="wl-status" role="status" aria-live="polite"></p>
+  </div>
+</section>
+
+<script>
+  // Envía el formulario a /api/waitlist, que manda el correo de bienvenida con todo sobre Luvin.
+  const form = document.querySelector<HTMLFormElement>('.wl-form')
+  const status = document.querySelector<HTMLElement>('.wl-status')
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (!status) return
+    const { thanks, error, soon, sending } = form.dataset
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')
+    if (button) button.disabled = true
+    status.dataset.state = ''
+    status.textContent = sending ?? ''
+    try {
+      const res = await fetch('/api/waitlist', { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
+      const data = await res.json().catch(() => ({}))
+      if (res.ok && data.ok) {
+        status.textContent = thanks ?? ''
+        form.reset()
+      } else {
+        status.dataset.state = data.error === 'not_configured' ? '' : 'error'
+        status.textContent = (data.error === 'not_configured' ? soon : error) ?? ''
+      }
+    } catch {
+      status.dataset.state = 'error'
+      status.textContent = error ?? ''
+    } finally {
+      if (button) button.disabled = false
+    }
+  })
+</script>

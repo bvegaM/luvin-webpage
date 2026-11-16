@@ -1,0 +1,23 @@
+---
+import Base from '../../../layouts/Base.astro'
+import VsFlows from '../../../components/VsFlows.astro'
+import { strings } from '../../../i18n/strings'
+
+const lang = 'es'
+const t = strings[lang]
+const home = lang === 'en' ? '/' : '/es/'
+---
+
+<Base lang={lang} path="compare/postman-flows/" title={t.flows.metaTitle} description={t.flows.metaDescription}>
+  <section class="section vs-page">
+    <div class="container">
+      <a class="back" href={home}>← {t.flows.back}</a>
+      <VsFlows lang={lang} />
+      <p class="fine center">{t.compare.note}</p>
+      <div class="vs-cta center">
+        <h2>{t.flows.ctaTitle}</h2>
+        <a class="btn btn-primary" href={`${home}#waitlist`}>{t.flows.ctaButton}</a>
+      </div>
+    </div>
+  </section>
+</Base>

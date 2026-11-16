@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+
+# Salida de la compilación y archivos generados por Astro y Vercel
+dist/
+.astro/
+.vercel/
+
+# Variables de entorno: tienen credenciales (contraseña de Gmail). Solo se sube la plantilla.
+.env
+.env.*
+!.env.example
+
+# Registros
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.idea/
+*.swp

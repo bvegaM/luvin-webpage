@@ -1,0 +1,33 @@
+# Compila el sitio en cada push y pull request a main para detectar errores antes de publicar.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Revisar tipos
+        run: npx astro sync && npx -p typescript@5.9.3 tsc --noEmit -p .
+
+      - name: Compilar
+        run: npm run build

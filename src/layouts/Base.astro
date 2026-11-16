@@ -1,0 +1,77 @@
+---
+import '@fontsource-variable/inter/index.css'
+import '../styles/global.css'
+import Wordmark from '../components/Wordmark.astro'
+import { strings, type Lang } from '../i18n/strings'
+
+interface Props {
+  lang: Lang
+  /** Ruta de la página después de la raíz del idioma, por ejemplo 'compare/postman-flows/'. */
+  path?: string
+  title?: string
+  description?: string
+}
+const { lang, path = '' } = Astro.props
+const t = strings[lang]
+const title = Astro.props.title ?? t.meta.title
+const description = Astro.props.description ?? t.meta.description
+const home = lang === 'en' ? '/' : '/es/'
+const other = (lang === 'en' ? '/es/' : '/') + path
+const canonical = new URL(home + path, Astro.site)
+const og = new URL(`/media/og-${lang}.jpg`, Astro.site)
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a110d" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={new URL('/' + path, Astro.site)} />
+    <link rel="alternate" hreflang="es" href={new URL('/es/' + path, Astro.site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={og} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="brand" href={home} aria-label="Luvin">
+          <img src="/logo.svg" width="32" height="32" alt="" />
+          <Wordmark size={26} />
+        </a>
+        <nav class="nav" aria-label="Main">
+          <a href={`${home}#problem`}>{t.nav.problem}</a>
+          <a href={`${home}#how`}>{t.nav.how}</a>
+          <a href={`${home}#compare`}>{t.nav.compare}</a>
+          <a href={`${home}#features`}>{t.nav.features}</a>
+        </nav>
+        <div class="header-actions">
+          <a class="lang" href={other} hreflang={lang === 'en' ? 'es' : 'en'}>{t.nav.switchLang}</a>
+          <a class="btn btn-primary btn-sm" href={`${home}#waitlist`}>{t.nav.waitlist}</a>
+        </div>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <div class="brand">
+          <img src="/logo.svg" width="28" height="28" alt="" />
+          <Wordmark size={22} />
+        </div>
+        <p class="footer-tagline">{t.footer.tagline}</p>
+        <p class="fine">© 2026 Luvin · {t.footer.specs}</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+---
+// Wordmark «luvin» en Inter 800: la «ı» sin punto lleva el nodo verde donde Inter pone el punto de la i.
+interface Props {
+  size?: number
+}
+const { size = 26 } = Astro.props
+---
+
+<span class="wordmark" style={`font-size:${size}px`} aria-hidden="true">luv<span class="wm-i">ı</span>n</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .wm-i {
+    position: relative;
+  }
+  .wm-i::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0.082em;
+    width: 0.18em;
+    height: 0.18em;
+    border-radius: 50%;
+    background: var(--node);
+    transform: translateX(-50%);
+  }
+</style>
