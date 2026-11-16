@@ -1,4 +1,12 @@
-# Compila el sitio en cada push y pull request a main para detectar errores antes de publicar.
+# CI/CD de Luvin.
+# - Pull requests a main: revisa tipos y compila, para detectar errores antes de unir.
+# - Push a main: lo mismo y, si todo pasa, publica en Cloudflare Workers.
+#
+# Secretos necesarios en GitHub (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   token con la plantilla "Edit Cloudflare Workers"
+#   CLOUDFLARE_ACCOUNT_ID  id de la cuenta de Cloudflare
+# Los secretos del formulario (SMTP_USER, SMTP_PASS...) viven en Cloudflare, no aquí:
+# Workers & Pages → luvin-web → Settings → Variables and Secrets. Publicar no los borra.
 name: CI
 
 on:
@@ -7,12 +15,14 @@ on:
   pull_request:
     branches: [main]
 
+# En PRs, un push nuevo cancela la ejecución anterior. En main nunca se corta un despliegue a medias.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
+    name: Compilar
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -31,3 +41,44 @@ jobs:
 
       - name: Compilar
         run: npm run build
+
+      # wrangler deploy necesita dist/ y .wrangler/deploy/ (los genera el build).
+      - name: Guardar el sitio compilado
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: |
+            dist/
+            .wrangler/deploy/
+          include-hidden-files: true
+          retention-days: 1
+
+  deploy:
+    name: Publicar en Cloudflare
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Recuperar el sitio compilado
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+
+      - name: Publicar
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

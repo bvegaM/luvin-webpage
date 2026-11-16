@@ -34,13 +34,13 @@ const list = (rows: { title: string; body: string }[], numbered = false) =>
     .map((r, i) => item(r.title, r.body, numbered ? `${i + 1}.` : '&#8226;'))
     .join('')}</table>`
 
-export function welcomeEmail(s: Signup, site: string) {
+// `site`: dominio para los enlaces. `assets`: de dónde se cargan las imágenes (ver /api/waitlist).
+export function welcomeEmail(s: Signup, site: string, assets: string = site) {
   const t = strings[s.lang]
   const e = t.email
   const home = new URL(s.lang === 'en' ? '/' : '/es/', site).href
-  // Imágenes adjuntas al correo (cid:), así se ven aunque el sitio no esté publicado.
-  const images = (['header', 'builder', 'results'] as const).map((n) => ({ cid: `${n}@luvin`, path: `/media/email/${n}-${s.lang}.jpg` }))
-  const img = (n: 'header' | 'builder' | 'results') => `cid:${n}@luvin`
+  // Imágenes livianas de public/media/email.
+  const img = (n: 'header' | 'builder' | 'results') => `${assets.replace(/\/$/, '')}/media/email/${n}-${s.lang}.jpg`
   const firstName = s.name.trim().split(/\s+/)[0] ?? ''
 
   const html = `<!doctype html>
@@ -112,7 +112,7 @@ export function welcomeEmail(s: Signup, site: string) {
     `\n--\n${e.why}`,
   ].join('\n')
 
-  return { subject: e.subject, html, text, images }
+  return { subject: e.subject, html, text }
 }
 
 // Aviso interno con todo lo que llenó la persona.

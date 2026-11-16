@@ -1,0 +1,23 @@
+# Variables del formulario de la lista de espera para desarrollo local.
+# Copia este archivo como .dev.vars (está en .gitignore), completa los valores y reinicia `npm run dev`.
+# En producción se cargan como secretos en Cloudflare: Workers & Pages → luvin-web → Settings → Variables and Secrets.
+# Sin SMTP_USER y SMTP_PASS, el formulario avisa que la lista abre pronto y no se envía nada.
+
+# Tu cuenta de Gmail.
+SMTP_USER=
+# Contraseña de aplicación de Google (16 letras), NO tu contraseña normal.
+# Se crea en https://myaccount.google.com/apppasswords (requiere verificación en 2 pasos).
+SMTP_PASS=
+
+# Opcional: nombre visible del remitente (por defecto "Luvin").
+WAITLIST_FROM_NAME=Luvin
+# Opcional: a dónde llega el aviso de cada registro (varios separados por coma). Por defecto, SMTP_USER.
+# También es la dirección a la que llegan las respuestas al correo de bienvenida.
+WAITLIST_NOTIFY_TO=
+
+# Para pasar a otro proveedor SMTP (Resend, Brevo...) con tu dominio, sin tocar código:
+# SMTP_HOST=smtp.resend.com
+# SMTP_PORT=465
+# SMTP_USER=resend
+# SMTP_PASS=re_...
+# WAITLIST_FROM=hola@tudominio.com
