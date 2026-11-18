@@ -16,14 +16,21 @@ npm run preview   # sirve dist/ para revisarlo
 | Qué | Dónde |
 |---|---|
 | Textos en inglés y español | `src/i18n/strings.ts` (mismas claves en los dos idiomas) |
-| Secciones de la página | `src/components/Landing.astro` |
+| Secciones de la página (portada, problema, cómo funciona, cadenas reales, cliente de APIs, comparación, funciones, para quién es, preguntas, lista de espera) | `src/components/Landing.astro` |
+| Iconos de las tarjetas | `src/components/Icon.astro` |
 | Cabecera, pie y etiquetas de SEO/redes | `src/layouts/Base.astro` |
 | Colores y estilos | `src/styles/global.css` |
 | Logo, teaser, capturas, iconos | `public/` |
 | Formulario de la lista de espera (servidor) | `src/pages/api/waitlist.ts` |
 | Correo de bienvenida y aviso al equipo | `src/lib/waitlist-email.ts` (usa los textos de `strings.ts`, clave `email`) |
 
-Las imágenes vienen del repo de Luvin: el teaser de `marketing/teaser/`, la animación A→B→C de `docs/readme/` y las capturas de `docs/screenshots/`.
+Las imágenes vienen de los otros repos:
+
+- El teaser (`public/media/teaser-<idioma>.mp4`) es `marketing/teaser/` del repo de Luvin. Se graba con `node marketing/teaser/render.mjs <ffmpeg> <salida.mp4> [teaser.es.html]` y luego se le agrega `music.wav`.
+- La animación A→B→C (`chain-dark.svg`) es la de `docs/readme/` del repo de Luvin.
+- Las capturas y los videos cortos de la app (`public/media/app/<idioma>/`) son los de la documentación (`luvin-docs/public/media/<idioma>/`), que se rehacen con `npm run media` allá. Las del correo (`public/media/email/`) son las mismas, en JPG de 1072 px de ancho.
+
+Todo lo que el sitio dice de Luvin tiene que existir en la app. Los textos usan las mismas palabras que la app: workflow (nunca "journey"), inputs, casos.
 
 ## Antes de publicar
 
