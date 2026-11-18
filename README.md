@@ -26,7 +26,7 @@ npm run preview   # sirve dist/ para revisarlo
 
 Las imágenes vienen de los otros repos:
 
-- El teaser (`public/media/teaser-<idioma>.mp4`) es `marketing/teaser/` del repo de Luvin. Se graba con `node marketing/teaser/render.mjs <ffmpeg> <salida.mp4> [teaser.es.html]` y luego se le agrega `music.wav`.
+- El video de la portada (`public/media/promo.mp4`, con su póster `promo-poster.jpg`) es `marketing/promo2/luvin-promo.mp4` del repo de Luvin (2:02, en inglés, para los dos idiomas), comprimido para la web: `ffmpeg -i luvin-promo.mp4 -c:v libx264 -preset slow -crf 27 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart promo.mp4`. Cloudflare no acepta archivos de más de 25 MB.
 - La animación A→B→C (`chain-dark.svg`) es la de `docs/readme/` del repo de Luvin.
 - Las capturas y los videos cortos de la app (`public/media/app/<idioma>/`) son los de la documentación (`luvin-docs/public/media/<idioma>/`), que se rehacen con `npm run media` allá. Las del correo (`public/media/email/`) son las mismas, en JPG de 1072 px de ancho.
 

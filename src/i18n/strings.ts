@@ -18,9 +18,7 @@ const en = {
     primary: 'Join the waitlist',
     secondary: 'See how it works',
     note: 'Local-first. No account. Nothing leaves your machine.',
-    videoLabel: 'Luvin teaser',
-    sound: 'Sound on',
-    mute: 'Mute',
+    videoLabel: 'Luvin demo: a chain of API calls designed, run and checked against the real PokéAPI',
   },
   specs: {
     label: 'Built on open standards',
@@ -214,9 +212,7 @@ const es: typeof en = {
     primary: 'Únete a la lista de espera',
     secondary: 'Ver cómo funciona',
     note: 'Local, sin cuenta. Nada sale de tu equipo.',
-    videoLabel: 'Teaser de Luvin',
-    sound: 'Activar sonido',
-    mute: 'Silenciar',
+    videoLabel: 'Demo de Luvin: una cadena de llamadas a APIs diseñada, ejecutada y comprobada contra la PokéAPI real',
   },
   specs: {
     label: 'Hecho sobre estándares abiertos',
