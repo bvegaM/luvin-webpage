@@ -19,6 +19,13 @@ const home = lang === 'en' ? '/' : '/es/'
 const other = (lang === 'en' ? '/es/' : '/') + path
 const canonical = new URL(home + path, Astro.site)
 const og = new URL(`/media/og-${lang}.jpg`, Astro.site)
+const links = [
+  { id: 'how', label: t.nav.how },
+  { id: 'chains', label: t.nav.chains },
+  { id: 'client', label: t.nav.client },
+  { id: 'compare', label: t.nav.compare },
+  { id: 'faq', label: t.nav.faq },
+]
 ---
 
 <!doctype html>
@@ -39,6 +46,8 @@ const og = new URL(`/media/og-${lang}.jpg`, Astro.site)
     <meta property="og:image" content={og} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Con JavaScript, las secciones aparecen al entrar en pantalla (sin él se ven desde el principio). -->
+    <script is:inline>document.documentElement.classList.add('js')</script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -49,14 +58,20 @@ const og = new URL(`/media/og-${lang}.jpg`, Astro.site)
           <Wordmark size={26} />
         </a>
         <nav class="nav" aria-label="Main">
-          <a href={`${home}#problem`}>{t.nav.problem}</a>
-          <a href={`${home}#how`}>{t.nav.how}</a>
-          <a href={`${home}#compare`}>{t.nav.compare}</a>
-          <a href={`${home}#features`}>{t.nav.features}</a>
+          {links.map((l) => <a href={`${home}#${l.id}`}>{l.label}</a>)}
         </nav>
         <div class="header-actions">
           <a class="lang" href={other} hreflang={lang === 'en' ? 'es' : 'en'}>{t.nav.switchLang}</a>
           <a class="btn btn-primary btn-sm" href={`${home}#waitlist`}>{t.nav.waitlist}</a>
+          <details class="menu">
+            <summary aria-label={t.nav.menu}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+            </summary>
+            <nav class="menu-panel" aria-label={t.nav.menu}>
+              {links.map((l) => <a href={`${home}#${l.id}`}>{l.label}</a>)}
+              <a href={other} hreflang={lang === 'en' ? 'es' : 'en'}>{t.nav.switchLang}</a>
+            </nav>
+          </details>
         </div>
       </div>
     </header>
@@ -73,5 +88,14 @@ const og = new URL(`/media/og-${lang}.jpg`, Astro.site)
         <p class="fine">© 2026 Luvin · {t.footer.specs}</p>
       </div>
     </footer>
+    <script>
+      // El menú del teléfono se cierra al elegir una sección; la cabecera se marca al bajar.
+      const menu = document.querySelector<HTMLDetailsElement>('.menu')
+      menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.removeAttribute('open')))
+      const header = document.querySelector('.site-header')
+      const onScroll = () => header?.classList.toggle('scrolled', scrollY > 8)
+      addEventListener('scroll', onScroll, { passive: true })
+      onScroll()
+    </script>
   </body>
 </html>
