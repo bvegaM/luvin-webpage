@@ -40,23 +40,16 @@ const tools = [
     <div class="frame">
       <div class="frame-bar" aria-hidden="true"><span></span><span></span><span></span></div>
       <video
-        class="teaser"
-        src={`/media/teaser-${lang}.mp4`}
-        poster={`/media/poster-${lang}.jpg`}
+        class="promo"
+        src="/media/promo.mp4"
+        poster="/media/promo-poster.jpg"
         aria-label={t.hero.videoLabel}
+        controls
         muted
         autoplay
         loop
         playsinline
         preload="metadata"></video>
-      <button class="sound" type="button" data-on={t.hero.mute} data-off={t.hero.sound} aria-pressed="false">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M11 5 6 9H3v6h3l5 4V5Z" />
-          <path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7" />
-          <path class="mute-x" d="m16 9 6 6m0-6-6 6" />
-        </svg>
-        <span>{t.hero.sound}</span>
-      </button>
     </div>
   </div>
   <div class="container specs reveal">
@@ -385,18 +378,6 @@ const tools = [
     } finally {
       if (button) button.disabled = false
     }
-  })
-
-  // Sonido del teaser: empieza en silencio (los navegadores solo reproducen solos los videos mudos).
-  const teaser = document.querySelector<HTMLVideoElement>('.teaser')
-  const sound = document.querySelector<HTMLButtonElement>('.sound')
-  sound?.addEventListener('click', () => {
-    if (!teaser) return
-    teaser.muted = !teaser.muted
-    if (!teaser.muted) void teaser.play()
-    sound.setAttribute('aria-pressed', String(!teaser.muted))
-    const label = sound.querySelector('span')
-    if (label) label.textContent = (teaser.muted ? sound.dataset.off : sound.dataset.on) ?? ''
   })
 
   // Lo que entra en pantalla aparece con una animación corta, y los videos de la app se reproducen
